@@ -13,7 +13,7 @@
     <!-- define the dependency -->
 
     <bean id="myCoach"
-          class="com.luv2code.springdemo.TrackCoach">
+          class="com.luv2code.springdemo.SwimCoach">
     </bean>
 
     <!--
