@@ -42,7 +42,7 @@ public class DeleteInstructorDetailDemo {
             // break bi-directional link
 
             tempInstructorDetail.getInstructor().setInstructorDetail(null);
-            
+
             session.delete(tempInstructorDetail);
 
             // commit transaction
