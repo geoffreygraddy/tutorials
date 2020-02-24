@@ -3,11 +3,12 @@ package com.luv2code.hibernate.demo;
 import com.luv2code.hibernate.demo.entity.Course;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
+import com.luv2code.hibernate.demo.entity.Review;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class CreateInstructorDemo {
+public class DeleteCourseAndReviewsDemo {
 
     public static void main(String[] args) {
 
@@ -17,6 +18,7 @@ public class CreateInstructorDemo {
                 .addAnnotatedClass(Instructor.class)
                 .addAnnotatedClass(InstructorDetail.class)
                 .addAnnotatedClass(Course.class)
+                .addAnnotatedClass(Review.class)
                 .buildSessionFactory();
 
         // create session
@@ -26,24 +28,22 @@ public class CreateInstructorDemo {
 
             // create the objects
 
-            Instructor tempInstructor = new Instructor("Susan", "Public", "susan.public@luv2code.com");
-
-            InstructorDetail tempInstructorDetail =
-                    new InstructorDetail(
-                            "http://www.youtube.com",
-                            "Video Games");
-
-            // associate the objects
-            tempInstructor.setInstructorDetail(tempInstructorDetail);
-
             // start a transaction
             session.beginTransaction();
 
-            // save the instructor
-            //
-            // Note: this will ALSO save the details object because of CascadeType.ALL
-            System.out.println("Saving instructor: " + tempInstructor);
-            session.save(tempInstructor);
+            // get the course
+            int theId = 10;
+            Course course = session.get(Course.class, theId);
+
+            // print the course
+            System.out.println("Deleting the course.... ");
+            System.out.println(course);
+
+            // print the course reviews
+            System.out.println(course.getReviews());
+
+            // delete the course
+            session.delete(course);
 
             // commit transaction
             session.getTransaction().commit();

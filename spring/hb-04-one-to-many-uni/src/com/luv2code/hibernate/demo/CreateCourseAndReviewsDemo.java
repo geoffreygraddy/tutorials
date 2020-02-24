@@ -3,11 +3,12 @@ package com.luv2code.hibernate.demo;
 import com.luv2code.hibernate.demo.entity.Course;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
+import com.luv2code.hibernate.demo.entity.Review;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class GetInstructorCoursesDemo {
+public class CreateCourseAndReviewsDemo {
 
     public static void main(String[] args) {
 
@@ -17,6 +18,7 @@ public class GetInstructorCoursesDemo {
                 .addAnnotatedClass(Instructor.class)
                 .addAnnotatedClass(InstructorDetail.class)
                 .addAnnotatedClass(Course.class)
+                .addAnnotatedClass(Review.class)
                 .buildSessionFactory();
 
         // create session
@@ -29,14 +31,20 @@ public class GetInstructorCoursesDemo {
             // start a transaction
             session.beginTransaction();
 
-           // get the instructor from db
-            int theId = 1;
-            Instructor tempInstructor = session.get(Instructor.class, theId);
+            // create a course
+            Course course = new Course("Pacman - How To Score One Million Points");
 
-            System.out.println("Instructor: " + tempInstructor);
+            // add some reviews
+            course.addReview(new Review("Great course ... loved it!"));
+            course.addReview(new Review("Cool course, job well done"));
+            course.addReview(new Review("What a dumb course, you are an idiot!"));
 
-            // get course for the instructor
-            System.out.println("Courses: " + tempInstructor.getCourses());
+            // save the course ... and leverage the cascade all :-)
+            System.out.println("Saving the course");
+            System.out.println(course);
+            System.out.println(course.getReviews());
+
+            session.save(course);
 
             // commit transaction
             session.getTransaction().commit();
